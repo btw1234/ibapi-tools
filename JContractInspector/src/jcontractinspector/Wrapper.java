@@ -25,20 +25,14 @@ import javafx.scene.control.TextArea;
  * @author brian
  */
 public class Wrapper implements com.ib.client.EWrapper{
-    private final TextArea logArea;
     
     public final BooleanProperty isConnected = new SimpleBooleanProperty(false);
+    private final FormCtlr ctlr;
     
-    Wrapper(TextArea logArea) {
-        this.logArea = logArea;
+    Wrapper(FormCtlr ctlr) {
+        this.ctlr = ctlr;
     }
 
-    private void log(String s){
-        Platform.runLater(() ->
-            logArea.appendText(LocalTime.now() + " " + s + "\n")
-        );
-    }
-    
     @Override
     public void tickPrice(int i, int i1, double d, TickAttr ta) {}
 
@@ -80,21 +74,25 @@ public class Wrapper implements com.ib.client.EWrapper{
 
     @Override
     public void nextValidId(int i) {
-        log("connected ok");
-        log(EWrapperMsgGenerator.nextValidId(i));
+        ctlr.log("connected ok");
+        ctlr.log(EWrapperMsgGenerator.nextValidId(i));
         Platform.runLater(() ->
-                isConnected.set(true)
+            isConnected.set(true)
         );
     }
 
     @Override
-    public void contractDetails(int i, ContractDetails cd) {}
+    public void contractDetails(int i, ContractDetails cd) {
+        ctlr.addContractToTable(i, cd);
+    }
 
     @Override
     public void bondContractDetails(int i, ContractDetails cd) {}
 
     @Override
-    public void contractDetailsEnd(int i) {}
+    public void contractDetailsEnd(int i) {
+        ctlr.log(EWrapperMsgGenerator.contractDetailsEnd(i));
+    }
 
     @Override
     public void execDetails(int i, Contract cntrct, Execution exctn) {}
@@ -182,25 +180,25 @@ public class Wrapper implements com.ib.client.EWrapper{
 
     @Override
     public void error(Exception excptn) {
-        log(EWrapperMsgGenerator.error(excptn));
+        ctlr.log(EWrapperMsgGenerator.error(excptn));
     }
 
     @Override
     public void error(String string) {
-        log(EWrapperMsgGenerator.error(string));
+        ctlr.log(EWrapperMsgGenerator.error(string));
     }
 
     @Override
     public void error(int i, int i1, String string) {
-        log(EWrapperMsgGenerator.error(i, i1, string));
+        ctlr.log(EWrapperMsgGenerator.error(i, i1, string));
         
     }
 
     @Override
     public void connectionClosed() {
-        log("connection closed");
-        Platform.runLater(() ->
-            isConnected.set(false)
+        ctlr.log("connection closed");
+        Platform.runLater(() -> 
+                isConnected.set(false)
         );
     }
 

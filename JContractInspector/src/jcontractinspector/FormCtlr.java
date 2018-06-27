@@ -1,11 +1,14 @@
 package jcontractinspector;
 
 import com.ib.client.Contract;
+import com.ib.client.ContractDetails;
 import com.ib.client.EClientSocket;
 import com.ib.client.EJavaSignal;
 import com.ib.client.EReader;
 import com.ib.client.EReaderSignal;
 import java.io.IOException;
+import java.time.LocalTime;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -58,12 +61,36 @@ public class FormCtlr {
     private EReader reader;
     private Wrapper wrapper;
         
+    void log(String s){
+        Platform.runLater(() ->
+            logArea.appendText(LocalTime.now() + " " + s + "\n")
+        );
+    }
+    
     @FXML void initialize() {
-        cbxSecType.getItems().addAll("STK","FUT","OPT");
+        cbxSecType.getItems().addAll("STK","FUT","OPT","IND","FOP","CASH","BAG","WAR","BOND","CMDTY","NEWS","FUND");
         cbxSecType.getSelectionModel().clearAndSelect(0);
         cbxSecIdType.getItems().addAll("CUSIP","ISIN");
         
-        wrapper = new Wrapper(logArea);
+        txtContractId.setTooltip(Desc.makeTT(Desc.strConId));
+        cbxSecType.setTooltip(Desc.makeTT(Desc.strSecType));
+        txtSymbol.setTooltip(Desc.makeTT(Desc.strSymbol));
+        txtLocalSymbol.setTooltip(Desc.makeTT(Desc.strLocalSymbol));
+        txtTradingClass.setTooltip(Desc.makeTT(Desc.strTradingClass));
+        txtExpiry.setTooltip(Desc.makeTT(Desc.strLastTradeDateOrContractMonth));
+        txtExchange.setTooltip(Desc.makeTT(Desc.strExchange));
+        txtPrimaryExchange.setTooltip(Desc.makeTT(Desc.strPrimaryExch));
+        txtCurrency.setTooltip(Desc.makeTT(Desc.strCurrency));
+        txtStrike.setTooltip(Desc.makeTT(Desc.strStrike));
+        txtRight.setTooltip(Desc.makeTT(Desc.strRight));
+        txtMultiplier.setTooltip(Desc.makeTT(Desc.strMultiplier));
+        cbxSecIdType.setTooltip(Desc.makeTT(Desc.strSecIdType));
+        txtSecId.setTooltip(Desc.makeTT(Desc.strSecId));
+        chkIncludeExpired.setTooltip(Desc.makeTT(Desc.strIncludeExpired));
+
+        MakeTables.Contracts(tblContracts);
+        
+        wrapper = new Wrapper(this);
         signal = new EJavaSignal();
         client = new EClientSocket(wrapper, signal);
         
@@ -98,28 +125,25 @@ public class FormCtlr {
                 Integer.parseInt(txtClientID.getText()));
 
         if (client.isConnected()) {
-            logArea.appendText("Connected to Tws server version "
-                    + client.serverVersion() + " at "
-                    + client.TwsConnectionTime() + "\n");
+            log("Connected to TWS server version "
+                    + client.serverVersion() + " at " + client.TwsConnectionTime());
         }
 
         reader = new EReader(client, signal);
 
         reader.start();
 
-        new Thread() {
-            @Override
-            public void run() {
-                while (client.isConnected()) {
-                    signal.waitForSignal();
-                    try {
-                        reader.processMsgs();
-                    } catch (IOException e) {
-                        wrapper.error(e);
-                    }
+        new Thread(() -> {
+            while (client.isConnected()) {
+                signal.waitForSignal();
+                try {
+                    reader.processMsgs();
+                } catch (IOException e) {
+                    wrapper.error(e);
                 }
             }
-        }.start();
+        }).start();
+        
     }
 
     private void disconnect() {
@@ -136,7 +160,29 @@ public class FormCtlr {
     }
     
     @FXML void reqContractDetails(ActionEvent event) {
-
+        Contract c = new Contract();
+        try {
+            c.conid(Integer.parseInt(txtContractId.getText()));
+        } catch (NumberFormatException nfe) {/*ok I guess*/}
+        c.secType(cbxSecType.getValue());
+        c.symbol(txtSymbol.getText());
+        c.localSymbol(txtLocalSymbol.getText());
+        c.tradingClass(txtTradingClass.getText());
+        c.lastTradeDateOrContractMonth(txtExpiry.getText());
+        c.exchange(txtExchange.getText());
+        c.primaryExch(txtPrimaryExchange.getText());
+        c.currency(txtCurrency.getText());
+        try {
+            c.strike(Double.parseDouble(txtStrike.getText()));
+        } catch (NumberFormatException nfe) {/*ok I guess*/}    
+        c.right(txtRight.getText());
+        c.multiplier(txtMultiplier.getText());
+        c.secIdType(cbxSecIdType.getValue());
+        c.secId(txtSecId.getText());
+        c.includeExpired(chkIncludeExpired.isSelected());
+        
+        tblContracts.getItems().clear();//so a new request doesn't fail with old data
+        client.reqContractDetails(0, c);
     }
 
     @FXML void reqDepth(ActionEvent event) {
@@ -149,6 +195,10 @@ public class FormCtlr {
 
     @FXML void reqSnapshot(ActionEvent event) {
 
+    }
+    
+    void addContractToTable(int i, ContractDetails cd){
+        tblContracts.getItems().add(cd.contract());
     }
 
 }
