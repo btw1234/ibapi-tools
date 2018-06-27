@@ -1,0 +1,44 @@
+.root{
+    -bg : #ddffff;
+    -fx-background-color: -bg;
+    -connected-color: #ccffcc;
+    -disconnected-color: #ffcccc;
+}
+
+.hbox-top {    
+    -fx-background-color: -disconnected-color;
+}
+
+.label-status {
+    -fx-text-fill: derive(-disconnected-color, -50%);
+}
+
+.hbox-top.connected {    
+    -fx-background-color: -connected-color;
+}
+
+.label-status.connected {
+    -fx-text-fill: derive(-connected-color, -50%);
+}
+
+#left-pane, 
+.scroll-pane,
+.scroll-pane > .viewport,
+.anchor-pane,
+.split-pane,
+.tab-header-background {
+    -fx-background-color: transparent;
+}
+
+
+.text-field {
+    -fx-background-color: lightgrey;
+    -fx-padding: 1px;
+    -fx-border-insets: 1px;
+    -fx-background-insets: 1px;
+}
+
+.split-pane > .split-pane-divider {
+    -fx-padding: 0 0.20em 0 0.20em; /* 0 3 0 3 */
+    -fx-color : derive(-bg, -20%);
+}

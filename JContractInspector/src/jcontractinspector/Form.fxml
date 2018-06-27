@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="800.0" prefWidth="1000.0" stylesheets="@form.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jcontractinspector.FormCtlr">
+   <children>
+      <HBox fx:id="topHBox" alignment="CENTER_LEFT" spacing="5.0" styleClass="hbox-top">
+         <children>
+            <Button fx:id="btnConnect" mnemonicParsing="false" onAction="#connect" text="Connect" />
+            <Region prefWidth="25.0" />
+            <Label text="API Server" />
+            <TextField fx:id="txtInetAddr" maxWidth="100.0" promptText="localhost" />
+            <Region prefWidth="25.0" />
+            <Label text="Port" />
+            <TextField fx:id="txtPort" maxWidth="100.0" text="7496" />
+            <Region prefWidth="25.0" />
+            <Label text="ClientID" />
+            <TextField fx:id="txtClientID" maxWidth="100.0" text="123" />
+            <Region prefWidth="100.0" HBox.hgrow="ALWAYS" />
+            <Label fx:id="lblStatus" styleClass="label-status" text="Status">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font></Label>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </HBox>
+      <SplitPane dividerPositions="0.7193675889328063" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" VBox.vgrow="ALWAYS">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+               <children>
+                  <SplitPane dividerPositions="0.26706827309236947" layoutX="24.0" layoutY="18.0" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <items>
+                      <AnchorPane minHeight="0.0" minWidth="0.0">
+                           <children>
+                              <VBox id="left-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    
+                                    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+                                       <content>
+                                          <VBox spacing="5.0">
+                                             <children>
+                                                <HBox>
+                                                   <children>
+                                                      <Label minWidth="125.0" prefWidth="125.0" text="Contract Id" wrapText="true" />
+                                                      <TextField fx:id="txtContractId" minWidth="20.0" text="0" HBox.hgrow="ALWAYS">
+                                                         <font>
+                                                            <Font size="12.0" />
+                                                         </font>
+                                                      </TextField>
+                                                   </children>
+                                                </HBox>
+                                                <Region minHeight="5.0" />
+                                                <HBox>
+                                                   <children>
+                                                      <Label minWidth="125.0" prefWidth="125.0" text="Sec Type" wrapText="true" />
+                                                      <ChoiceBox fx:id="cbxSecType" prefWidth="150.0" />
+                                                   </children>
+                                                </HBox>
+                                                <Region minHeight="5.0" />
+                                                <HBox>
+                                                   <children>
+                                                      <Label minWidth="125.0" prefWidth="125.0" text="Symbol" wrapText="true" />
+                                                      <TextField fx:id="txtSymbol" minWidth="20.0" HBox.hgrow="ALWAYS">
+                                                         <font>
+                                                            <Font size="12.0" />
+                                                         </font>
+                                                      </TextField>
+                                                   </children>
+                                                </HBox>
+                                                <HBox>
+                                                   <children>
+                                                      <Label minWidth="125.0" prefWidth="125.0" text="Local Symbol" wrapText="true" />
+                                                      <TextField fx:id="txtLocalSymbol" minWidth="20.0" HBox.hgrow="ALWAYS">
+                                                         <font>
+                                                            <Font size="12.0" />
+                                                         </font>
+                                                      </TextField>
+                                                   </children>
+                                                </HBox>
+                                                <HBox>
+                                                   <children>
+                                                      <Label minWidth="125.0" prefWidth="125.0" text="Trading Class" wrapText="true" />
+                                                      <TextField fx:id="txtTradingClass" minWidth="20.0" HBox.hgrow="ALWAYS">
+                                                         <font>
+                                                            <Font size="12.0" />
+                                                         </font>
+                                                      </TextField>
+                                                   </children>
+                                                </HBox>
+                                                <Region minHeight="5.0" />
+                                                <HBox>
+                                                   <children>
+                                                      <Label minWidth="125.0" prefWidth="125.0" text="Last trade date or contract month" wrapText="true" />
+                                                      <TextField fx:id="txtExpiry" minWidth="20.0" HBox.hgrow="ALWAYS">
+                                                         <font>
+                                                            <Font size="12.0" />
+                                                         </font>
+                                                      </TextField>
+                                                   </children>
+                                                </HBox>
+                                                <HBox>
+                                                   <children>
+                                                      <Label minWidth="125.0" prefWidth="125.0" text="Exchange" wrapText="true" />
+                                                      <TextField fx:id="txtExchange" minWidth="20.0" HBox.hgrow="ALWAYS">
+                                                         <font>
+                                                            <Font size="12.0" />
+                                                         </font>
+                                                      </TextField>
+                                                   </children>
+                                                </HBox>
+                                                <HBox>
+                                                   <children>
+                                                      <Label minWidth="125.0" prefWidth="125.0" text="Primary Exchange" wrapText="true" />
+                                                      <TextField fx:id="txtPrimaryExchange" minWidth="20.0" HBox.hgrow="ALWAYS">
+                                                         <font>
+                                                            <Font size="12.0" />
+                                                         </font>
+                                                      </TextField>
+                                                   </children>
+                                                </HBox>
+                                                <Region minHeight="5.0" />
+                                                <HBox>
+                                                   <children>
+                                                      <Label minWidth="125.0" prefWidth="125.0" text="Currency" wrapText="true" />
+                                                      <TextField fx:id="txtCurrency" minWidth="20.0" HBox.hgrow="ALWAYS">
+                                                         <font>
+                                                            <Font size="12.0" />
+                                                         </font>
+                                                      </TextField>
+                                                   </children>
+                                                </HBox>
+                                                <Region minHeight="5.0" />
+                                                <HBox>
+                                                   <children>
+                                                      <Label minWidth="125.0" prefWidth="125.0" text="Strike" wrapText="true" />
+                                                      <TextField fx:id="txtStrike" minWidth="20.0" HBox.hgrow="ALWAYS">
+                                                         <font>
+                                                            <Font size="12.0" />
+                                                         </font>
+                                                      </TextField>
+                                                   </children>
+                                                </HBox>
+                                                <HBox>
+                                                   <children>
+                                                      <Label minWidth="125.0" prefWidth="125.0" text="Right" wrapText="true" />
+                                                      <TextField fx:id="txtRight" minWidth="20.0" HBox.hgrow="ALWAYS">
+                                                         <font>
+                                                            <Font size="12.0" />
+                                                         </font>
+                                                      </TextField>
+                                                   </children>
+                                                </HBox>
+                                                <Region minHeight="5.0" />
+                                                <HBox>
+                                                   <children>
+                                                      <Label minWidth="125.0" prefWidth="125.0" text="Multiplier" wrapText="true" />
+                                                      <TextField fx:id="txtMultiplier" minWidth="20.0" HBox.hgrow="ALWAYS">
+                                                         <font>
+                                                            <Font size="12.0" />
+                                                         </font>
+                                                      </TextField>
+                                                   </children>
+                                                </HBox>
+                                                <Region minHeight="5.0" />
+                                                <HBox>
+                                                   <children>
+                                                      <Label minWidth="125.0" prefWidth="125.0" text="Sec Id Type" wrapText="true" />
+                                                      <ChoiceBox fx:id="cbxSecIdType" prefWidth="150.0" />
+                                                   </children>
+                                                </HBox>
+                                                <HBox>
+                                                   <children>
+                                                      <Label minWidth="125.0" prefWidth="125.0" text="Sec Id" wrapText="true" />
+                                                      <TextField fx:id="txtSecId" minWidth="20.0" HBox.hgrow="ALWAYS">
+                                                         <font>
+                                                            <Font size="12.0" />
+                                                         </font>
+                                                      </TextField>
+                                                   </children>
+                                                </HBox>
+                                                <Region minHeight="5.0" />
+                                                <HBox>
+                                                   <children>
+                                                      <Label minWidth="125.0" prefWidth="125.0" text="Include Expired" wrapText="true" />
+                                                      <CheckBox fx:id="chkIncludeExpired" mnemonicParsing="false" text="Yes" />
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </VBox>
+                                       </content>
+                                    </ScrollPane>
+                                    <Button fx:id="btnReqContractDetails" mnemonicParsing="false" onAction="#reqContractDetails" text="Request contract details">
+                                       <VBox.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </VBox.margin>
+                                    </Button>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                      <AnchorPane minHeight="0.0" minWidth="0.0">
+                           <children>
+                              <TabPane layoutX="181.0" layoutY="53.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <tabs>
+                                  <Tab fx:id="tabContracts" text="Contracts">
+                                       <content>
+                                          <VBox>
+                                             <children>
+                                                <TableView fx:id="tblContracts" VBox.vgrow="ALWAYS" />
+                                                <HBox id="under-table" alignment="CENTER_LEFT" spacing="5.0">
+                                                   <children>
+                                                      <Button fx:id="btnReqMktData" mnemonicParsing="false" onAction="#reqMktData" text="Start ticker(s)" />
+                                                      <Button fx:id="btnReqSnapshot" mnemonicParsing="false" onAction="#reqSnapshot" text="Start snapshot(s)" />
+                                                      <Button fx:id="btnReqDepth" mnemonicParsing="false" onAction="#reqDepth" text="Start market depth" />
+                                                      <Region HBox.hgrow="ALWAYS" />
+                                                      <Label fx:id="lblContracts" alignment="CENTER_RIGHT" text="Label" />
+                                                   </children>
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                   </padding>
+                                                </HBox>
+                                             </children>
+                                          </VBox>
+                                       </content></Tab>
+                                  <Tab fx:id="tabTickers" text="Tickers" />
+                                    <Tab fx:id="tabDepth" text="Market Depth" />
+                                </tabs>
+                              </TabPane>
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0">
+               <children>
+                  <TextArea fx:id="logArea" editable="false" focusTraversable="false" layoutX="26.0" layoutY="-93.0" promptText="log" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</VBox>
