@@ -235,7 +235,7 @@
                                                       <Button fx:id="btnReqSnapshot" mnemonicParsing="false" onAction="#reqSnapshot" text="Start snapshot(s)" />
                                                       <Button fx:id="btnReqDepth" mnemonicParsing="false" onAction="#reqDepth" text="Start market depth" />
                                                       <Region HBox.hgrow="ALWAYS" />
-                                                      <Label fx:id="lblContracts" alignment="CENTER_RIGHT" text="Label" />
+                                                      <Label fx:id="lblContracts" alignment="CENTER_RIGHT" text="Items" />
                                                    </children>
                                                    <padding>
                                                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

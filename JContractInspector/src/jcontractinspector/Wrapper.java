@@ -13,12 +13,10 @@ import com.ib.client.Order;
 import com.ib.client.OrderState;
 import com.ib.client.SoftDollarTier;
 import com.ib.client.TickAttr;
-import java.time.LocalTime;
 import java.util.Set;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.scene.control.TextArea;
 
 /**
  *
