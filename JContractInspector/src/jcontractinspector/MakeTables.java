@@ -14,8 +14,6 @@ import javafx.scene.control.TableView;
  */
 public class MakeTables {
 
-    
-    
     private MakeTables() {}
     
     static void contracts(TableView tblContracts){
@@ -100,6 +98,9 @@ public class MakeTables {
 
         tblDepthBid.getColumns().setAll(makerBid, bid, bidSz, cumSzBid);
         tblDepthAsk.getColumns().setAll(makerAsk, ask, askSz, cumSzAsk);
+        
+        tblDepthBid.getSortOrder().add(bid);
+        tblDepthAsk.getSortOrder().add(ask);
     }
 
 }

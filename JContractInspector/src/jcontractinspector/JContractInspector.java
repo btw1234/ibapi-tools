@@ -46,6 +46,7 @@ public class JContractInspector extends Application {
 //        
         ctlr.disconnect();
     }
+    
     public static void main(String[] args) {
         launch(args);
     }
