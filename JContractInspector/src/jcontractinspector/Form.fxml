@@ -234,6 +234,7 @@
                                                       <Button fx:id="btnReqMktDataDelayed" mnemonicParsing="false" onAction="#reqMktData" text="Start ticker(s) delayed" />
                                                       <Button fx:id="btnReqSnapshot" mnemonicParsing="false" onAction="#reqSnapshot" text="Start snapshot(s)" />
                                                       <Button fx:id="btnReqDepth" mnemonicParsing="false" onAction="#reqDepth" text="Start market depth" />
+                                                      <Button fx:id="btnMoreDetails" mnemonicParsing="false" onAction="#moreDetails" text="More details" />
                                                       <Region HBox.hgrow="ALWAYS" />
                                                       <Label fx:id="lblContracts" alignment="CENTER_RIGHT" text="Items" />
                                                    </children>

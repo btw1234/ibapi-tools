@@ -1,10 +1,15 @@
 package jcontractinspector;
 
 import com.ib.client.ContractDetails;
+import com.ib.client.EWrapperMsgGenerator;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
 import javafx.beans.property.ReadOnlyIntegerWrapper;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.event.ActionEvent;
+import javafx.scene.control.Button;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
@@ -17,7 +22,6 @@ public class MakeTables {
     private MakeTables() {}
     
     static void contracts(TableView<ContractDetails> tblContracts){
-        
         TableColumn<ContractDetails, Number> conid = new TableColumn<>("conid");
         TableColumn<ContractDetails, String> secType = new TableColumn<>("sec\nType");
         TableColumn<ContractDetails, String> symbol = new TableColumn<>("symbol");
@@ -47,7 +51,7 @@ public class MakeTables {
         multiplier.setCellValueFactory((param) -> new ReadOnlyStringWrapper(param.getValue().contract().multiplier()));
 //        secIdType.setCellValueFactory((param) -> new ReadOnlyStringWrapper(param.getValue().secIdType().getApiString()));
 //        secId.setCellValueFactory((param) -> new ReadOnlyStringWrapper(param.getValue().secId()));
-//        
+//      
         tblContracts.getColumns().setAll(conid,localSymbol,secType,symbol,tradingClass,exchange,currency,expiry,strike,right,multiplier);
         tblContracts.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         
