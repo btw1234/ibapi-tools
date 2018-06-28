@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="800.0" prefWidth="1200.0" stylesheets="@form.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jcontractinspector.FormCtlr">
+<VBox prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jcontractinspector.FormCtlr">
    <children>
       <HBox fx:id="topHBox" alignment="CENTER_LEFT" spacing="5.0" styleClass="hbox-top">
          <children>
@@ -221,7 +221,7 @@
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0">
                            <children>
-                              <TabPane layoutX="181.0" layoutY="53.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <TabPane fx:id="tabPane" layoutX="181.0" layoutY="53.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <tabs>
                                   <Tab fx:id="tabContracts" text="Contracts">
                                        <content>
@@ -231,6 +231,7 @@
                                                 <HBox id="under-table" alignment="CENTER_LEFT" spacing="5.0">
                                                    <children>
                                                       <Button fx:id="btnReqMktData" mnemonicParsing="false" onAction="#reqMktData" text="Start ticker(s)" />
+                                                      <Button fx:id="btnReqMktDataDelayed" mnemonicParsing="false" onAction="#reqMktDataDelayed" text="Start ticker(s) delayed" />
                                                       <Button fx:id="btnReqSnapshot" mnemonicParsing="false" onAction="#reqSnapshot" text="Start snapshot(s)" />
                                                       <Button fx:id="btnReqDepth" mnemonicParsing="false" onAction="#reqDepth" text="Start market depth" />
                                                       <Region HBox.hgrow="ALWAYS" />
@@ -243,8 +244,43 @@
                                              </children>
                                           </VBox>
                                        </content></Tab>
-                                  <Tab fx:id="tabTickers" text="Tickers" />
-                                    <Tab fx:id="tabDepth" text="Market Depth" />
+                                  <Tab fx:id="tabTickers" text="Tickers">
+                                       <content>
+                                          <VBox>
+                                             <children>
+                                                <TableView fx:id="tblTickers" VBox.vgrow="ALWAYS" />
+                                                <HBox id="under-table" alignment="CENTER_LEFT" spacing="5.0">
+                                                   <children>
+                                                      <Button fx:id="btnCancelData" mnemonicParsing="false" onAction="#cancelMktData" text="Stop selected ticker(s)" />
+                                                   </children>
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                   </padding>
+                                                </HBox>
+                                             </children>
+                                          </VBox>
+                                       </content></Tab>
+                                    <Tab fx:id="tabDepth" text="Market Depth">
+                                       <content>
+                                          <VBox>
+                                             <children>
+                                                <HBox VBox.vgrow="ALWAYS">
+                                                   <children>
+                                                      <TableView fx:id="tblDepthBid" HBox.hgrow="ALWAYS" />
+                                                      <TableView fx:id="tblDepthAsk" HBox.hgrow="ALWAYS" />
+                                                   </children>
+                                                </HBox>
+                                                <HBox id="under-table" alignment="CENTER_LEFT" spacing="5.0">
+                                                   <children>
+                                                      <Button fx:id="btnCancelDepth" mnemonicParsing="false" onAction="#cancelMktDepth" text="Stop market depth" />
+                                                   </children>
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                   </padding>
+                                                </HBox>
+                                             </children>
+                                          </VBox>
+                                       </content></Tab>
                                 </tabs>
                               </TabPane>
                            </children>

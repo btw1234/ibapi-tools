@@ -34,10 +34,38 @@ public class Wrapper implements com.ib.client.EWrapper{
     }
 
     @Override
-    public void tickPrice(int i, int i1, double d, TickAttr ta) {}
+    public void nextValidId(int i) {
+        ctlr.log("connected ok");
+        ctlr.log(EWrapperMsgGenerator.nextValidId(i));
+        Platform.runLater(() ->
+            isConnected.set(true)
+        );
+    }
 
     @Override
-    public void tickSize(int i, int i1, int i2) {}
+    public void contractDetails(int id, ContractDetails cd) {
+        ctlr.addContractToTable(id, cd);
+    }
+
+    @Override
+    public void contractDetailsEnd(int i) {
+        ctlr.log(EWrapperMsgGenerator.contractDetailsEnd(i));
+    }
+
+    @Override
+    public void tickPrice(int id, int field, double price, TickAttr ta) {
+        ctlr.reqs.get(id).tickPrice(field, price);
+    }
+
+    @Override
+    public void tickSize(int id, int field, int size) {
+        ctlr.reqs.get(id).tickSize(field, size);
+    }
+
+    @Override
+    public void updateMktDepth(int id, int pos, int op, int side, double price, int vol) {
+        ctlr.updateMktDepth(id, pos, op, side, price, vol);
+    }
 
     @Override
     public void tickOptionComputation(int i, int i1, double d, double d1, double d2, double d3, double d4, double d5, double d6, double d7) {}
@@ -73,35 +101,13 @@ public class Wrapper implements com.ib.client.EWrapper{
     public void accountDownloadEnd(String string) {}
 
     @Override
-    public void nextValidId(int i) {
-        ctlr.log("connected ok");
-        ctlr.log(EWrapperMsgGenerator.nextValidId(i));
-        Platform.runLater(() ->
-            isConnected.set(true)
-        );
-    }
-
-    @Override
-    public void contractDetails(int i, ContractDetails cd) {
-        ctlr.addContractToTable(i, cd);
-    }
-
-    @Override
     public void bondContractDetails(int i, ContractDetails cd) {}
-
-    @Override
-    public void contractDetailsEnd(int i) {
-        ctlr.log(EWrapperMsgGenerator.contractDetailsEnd(i));
-    }
 
     @Override
     public void execDetails(int i, Contract cntrct, Execution exctn) {}
 
     @Override
     public void execDetailsEnd(int i) {}
-
-    @Override
-    public void updateMktDepth(int i, int i1, int i2, int i3, double d, int i4) {}
 
     @Override
     public void updateMktDepthL2(int i, int i1, String string, int i2, int i3, double d, int i4) {}

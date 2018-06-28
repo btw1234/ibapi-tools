@@ -6,8 +6,13 @@ import com.ib.client.EClientSocket;
 import com.ib.client.EJavaSignal;
 import com.ib.client.EReader;
 import com.ib.client.EReaderSignal;
+import com.ib.client.MarketDataType;
 import java.io.IOException;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
@@ -17,6 +22,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -46,6 +52,7 @@ public class FormCtlr {
     @FXML private TextField txtSecId;
     @FXML private CheckBox chkIncludeExpired;
     @FXML private Button btnReqContractDetails;
+    @FXML private TabPane tabPane;
     @FXML private Tab tabContracts;
     @FXML private TableView<Contract> tblContracts;
     @FXML private Button btnReqMktData;
@@ -55,12 +62,20 @@ public class FormCtlr {
     @FXML private Tab tabTickers;
     @FXML private Tab tabDepth;
     @FXML private TextArea logArea;
+    @FXML private TableView<Ticker> tblTickers;
+    @FXML private Button btnCancelData;
+    @FXML private TableView<Depth> tblDepthBid;
+    @FXML private TableView<Depth> tblDepthAsk;
+    @FXML private Button btnCancelDepth;
     
     private EReaderSignal signal;
     private EClientSocket  client;
     private EReader reader;
     private Wrapper wrapper;
-        
+    
+    private int reqId = 1;
+    final Map<Integer, Ticker> reqs = new HashMap<>();
+
     void log(String s){
         Platform.runLater(() ->
             logArea.appendText(LocalTime.now() + " " + s + "\n")
@@ -88,7 +103,9 @@ public class FormCtlr {
         txtSecId.setTooltip(Desc.makeTT(Desc.strSecId));
         chkIncludeExpired.setTooltip(Desc.makeTT(Desc.strIncludeExpired));
 
-        MakeTables.Contracts(tblContracts);
+        MakeTables.contracts(tblContracts);
+        MakeTables.tickers(tblTickers);
+        MakeTables.depth(tblDepthBid, tblDepthAsk);
         
         wrapper = new Wrapper(this);
         signal = new EJavaSignal();
@@ -146,7 +163,7 @@ public class FormCtlr {
         
     }
 
-    private void disconnect() {
+    void disconnect() {
         wrapper.isConnected.set(false);
         client.eDisconnect();
     }
@@ -185,16 +202,75 @@ public class FormCtlr {
         client.reqContractDetails(0, c);
     }
 
-    @FXML void reqDepth(ActionEvent event) {
-
+    @FXML void reqMktDataDelayed(ActionEvent event) {
+        client.reqMarketDataType(MarketDataType.DELAYED);
+        reqMktData(event);
+        client.reqMarketDataType(MarketDataType.REALTIME);
     }
-
+    
     @FXML void reqMktData(ActionEvent event) {
-
+        tblContracts.getSelectionModel().getSelectedItems().forEach(cont -> {
+            Ticker ticker = new Ticker(reqId, cont, false);
+            reqs.put(reqId, ticker);
+            tblTickers.getItems().add(ticker);
+            client.reqMktData(reqId++, cont, "", false, null);
+            log("reqMktData for " + cont.localSymbol());
+        });
+        tabPane.getSelectionModel().select(tabTickers);
+    }
+    
+    @FXML void cancelMktData(ActionEvent event) {
+        List<Ticker> toRemove = new ArrayList<>();
+        tblTickers.getSelectionModel().getSelectedItems().forEach(ticker -> {
+            if (!ticker.isSnapshot) client.cancelMktData(ticker.reqId);
+            reqs.remove(ticker.reqId);
+            log("cancelMktData for " + ticker.symbol.get());
+            toRemove.add(ticker);
+        });
+        tblTickers.getItems().removeAll(toRemove);
     }
 
-    @FXML void reqSnapshot(ActionEvent event) {
+    @FXML void reqDepth(ActionEvent event) {
+        Contract cont = tblContracts.getSelectionModel().getSelectedItem();
+        Depth.reqId = reqId;
+        //make 20 depths to re-use
+        for (int i = 0; i < 10; i++){
+            tblDepthAsk.getItems().add(new Depth());
+            tblDepthBid.getItems().add(new Depth());
+        }
+        client.reqMktDepth(reqId++, cont, 10, null);
+        log("reqMktDepth for " + cont.localSymbol());
+        tabPane.getSelectionModel().select(tabDepth);
+    }
 
+    void updateMktDepth(int id, int pos, int op, int side, double price, int size) {
+        if (side == 0){ //ask
+            Depth depth = tblDepthAsk.getItems().get(pos);
+            depth.price.set(price);
+            depth.size.set(size);
+            //??cum size every time
+        } else { //bid
+            Depth depth = tblDepthBid.getItems().get(pos);
+            depth.price.set(price);
+            depth.size.set(size);
+        }
+    }
+
+    @FXML void cancelMktDepth(ActionEvent event) {
+        client.cancelMktDepth(Depth.reqId);
+        log("cancelMktData id" + Depth.reqId);
+        tblDepthBid.getItems().clear();
+        tblDepthAsk.getItems().clear();
+    }
+    
+    @FXML void reqSnapshot(ActionEvent event) {
+        tblContracts.getSelectionModel().getSelectedItems().forEach(cont -> {
+            Ticker ticker = new Ticker(reqId, cont, true);
+            reqs.put(reqId, ticker);
+            tblTickers.getItems().add(ticker);
+            client.reqMktData(reqId++, cont, "", true, null);
+            log("snapshot for " + cont.localSymbol());
+        });
     }
     
     void addContractToTable(int i, ContractDetails cd){
