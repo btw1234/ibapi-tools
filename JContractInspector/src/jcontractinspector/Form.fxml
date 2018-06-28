@@ -231,7 +231,7 @@
                                                 <HBox id="under-table" alignment="CENTER_LEFT" spacing="5.0">
                                                    <children>
                                                       <Button fx:id="btnReqMktData" mnemonicParsing="false" onAction="#reqMktData" text="Start ticker(s)" />
-                                                      <Button fx:id="btnReqMktDataDelayed" mnemonicParsing="false" onAction="#reqMktDataDelayed" text="Start ticker(s) delayed" />
+                                                      <Button fx:id="btnReqMktDataDelayed" mnemonicParsing="false" onAction="#reqMktData" text="Start ticker(s) delayed" />
                                                       <Button fx:id="btnReqSnapshot" mnemonicParsing="false" onAction="#reqSnapshot" text="Start snapshot(s)" />
                                                       <Button fx:id="btnReqDepth" mnemonicParsing="false" onAction="#reqDepth" text="Start market depth" />
                                                       <Region HBox.hgrow="ALWAYS" />

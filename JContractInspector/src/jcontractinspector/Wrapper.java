@@ -35,36 +35,47 @@ public class Wrapper implements com.ib.client.EWrapper{
 
     @Override
     public void nextValidId(int i) {
-        ctlr.log("connected ok");
-        ctlr.log(EWrapperMsgGenerator.nextValidId(i));
-        Platform.runLater(() ->
-            isConnected.set(true)
-        );
+        Platform.runLater(() -> {
+            ctlr.log("connected ok");
+            ctlr.log(EWrapperMsgGenerator.nextValidId(i));
+            isConnected.set(true);
+        });
     }
 
     @Override
     public void contractDetails(int id, ContractDetails cd) {
-        ctlr.addContractToTable(id, cd);
+        Platform.runLater(() -> {
+                ctlr.addContractToTable(id, cd);
+        });
     }
 
     @Override
     public void contractDetailsEnd(int i) {
-        ctlr.log(EWrapperMsgGenerator.contractDetailsEnd(i));
+        Platform.runLater(() -> {
+            ctlr.log(EWrapperMsgGenerator.contractDetailsEnd(i));
+            ctlr.contractDetailsEnd();//to update number rec'd
+        });
     }
 
     @Override
     public void tickPrice(int id, int field, double price, TickAttr ta) {
-        ctlr.reqs.get(id).tickPrice(field, price);
+        Platform.runLater(() -> {
+                ctlr.reqs.get(id).tickPrice(field, price);
+        });
     }
 
     @Override
     public void tickSize(int id, int field, int size) {
-        ctlr.reqs.get(id).tickSize(field, size);
+        Platform.runLater(() -> {
+                ctlr.reqs.get(id).tickSize(field, size);
+        });
     }
 
     @Override
     public void updateMktDepth(int id, int pos, int op, int side, double price, int vol) {
-        ctlr.updateMktDepth(id, pos, op, side, price, vol);
+        Platform.runLater(() -> {
+            ctlr.updateMktDepth(id, pos, op, side, price, vol);
+        });
     }
 
     @Override

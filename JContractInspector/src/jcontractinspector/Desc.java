@@ -26,7 +26,7 @@ public class Desc {
     static Tooltip makeTT(String s){
         Tooltip tt = new Tooltip(s);
         tt.setPrefWidth(300);
-        tt.setHideDelay(Duration.millis(s.length() * 10));
+//        tt.setHideDelay(Duration.millis(s.length() * 11));
         tt.setWrapText(true);
         tt.getStyleClass().add("tooltip");
         return tt;

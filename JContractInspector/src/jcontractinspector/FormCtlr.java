@@ -201,14 +201,17 @@ public class FormCtlr {
         tblContracts.getItems().clear();//so a new request doesn't fail with old data
         client.reqContractDetails(0, c);
     }
-
-    @FXML void reqMktDataDelayed(ActionEvent event) {
-        client.reqMarketDataType(MarketDataType.DELAYED);
-        reqMktData(event);
-        client.reqMarketDataType(MarketDataType.REALTIME);
-    }
     
+    void contractDetailsEnd(){
+        lblContracts.setText(tblContracts.getItems().size() + " items");
+    }
+
     @FXML void reqMktData(ActionEvent event) {
+        if (((Button)event.getSource()).getId().contains("elayed")){
+            client.reqMarketDataType(MarketDataType.DELAYED);
+        } else {
+            client.reqMarketDataType(MarketDataType.REALTIME);
+        }
         tblContracts.getSelectionModel().getSelectedItems().forEach(cont -> {
             Ticker ticker = new Ticker(reqId, cont, false);
             reqs.put(reqId, ticker);
