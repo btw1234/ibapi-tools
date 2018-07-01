@@ -57,11 +57,16 @@ public class JContractInspector extends Application {
             if (nv.doubleValue() > 0) y = nv.doubleValue();//compare to desktop
         });
         
+        x = stage.getX();
+        y = stage.getY();
+        
+        ctlr.setData(config);
+        
         this.stage = stage;
     }
 
     @Override public void stop() {
-        System.out.println(x+ " " +y);
+        ctlr.getData(config);
         config.setProperty("screenX", String.format("%.1f", x));
         config.setProperty("screenY", String.format("%.1f", y));
         config.setProperty("screenW", String.format("%.1f", Math.max(500, stage.getWidth())));

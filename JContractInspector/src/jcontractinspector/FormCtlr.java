@@ -10,20 +10,20 @@ import com.ib.client.MarketDataType;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableView;
@@ -70,6 +70,8 @@ public class FormCtlr {
     @FXML private TableView<Depth> tblDepthBid;
     @FXML private TableView<Depth> tblDepthAsk;
     @FXML private Button btnCancelDepth;
+    @FXML private SplitPane vert;
+    @FXML private SplitPane horiz;
     
     private EReaderSignal signal;
     private EClientSocket  client;
@@ -301,6 +303,26 @@ public class FormCtlr {
     
     void addContractToTable(int i, ContractDetails cd){
         tblContracts.getItems().add(cd);
+    }
+
+    void setData(Properties config) {
+        txtPort.setText(config.getProperty("port", "7497"));
+        txtInetAddr.setText(config.getProperty("inetAddr", ""));
+        txtClientID.setText(config.getProperty("clientId", "123"));
+        horiz.setDividerPositions(Double.parseDouble(config.getProperty("horiz", "0.2")));
+        vert.setDividerPositions(Double.parseDouble(config.getProperty("vert", "0.75")));
+    }
+
+    /**
+     * 
+     * @param config will be added to with some properties as a side effect.
+     */
+    void getData(Properties config) {
+        config.setProperty("port", txtPort.getText());
+        config.setProperty("inetAddr", txtInetAddr.getText());
+        config.setProperty("clientId", txtClientID.getText());
+        config.setProperty("vert", String.valueOf(vert.getDividerPositions()[0]));
+        config.setProperty("horiz", String.valueOf(horiz.getDividerPositions()[0]));
     }
 
 }
